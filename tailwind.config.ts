@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import type { Config } from "tailwindcss";
-import withMT from "@material-tailwind/react/utils/withMT";
+import { mtConfig } from "@material-tailwind/react";
 
 const config: Config =
 {
@@ -14,7 +14,7 @@ const config: Config =
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [mtConfig],
 };
 
-export default withMT(config);
+export default config;
