@@ -1,3 +1,3 @@
 export const API_ROUTES = {
-  FILES: '/files',
+  FILES: '/files/',
 } as const;
