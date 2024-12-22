@@ -16,6 +16,7 @@ import {
   UploadSquareSolid,
   Xmark
 } from 'iconoir-react';
+import toast from 'react-hot-toast';
 
 function AcceptedFiles({ acceptedFiles }: { acceptedFiles: readonly File[]; }) {
   return acceptedFiles.map((file) => (
@@ -88,6 +89,7 @@ export function TxtFileImportDialog({
       if (response.error) {
         throw response.error;
       } else {
+        toast.success('File uploaded successfully', { duration: 3000, style: { background: '#10B981', color: '#F9FAFB' } });
         closeDialog();
         setIsOpen(false);
       }

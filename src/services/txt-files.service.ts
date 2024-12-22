@@ -13,12 +13,17 @@ export type TxtFile = {
   tags: string;
 };
 
+export type TxtFileSearchBy = "tags" | "name" | "contents";
+
 class TxtFilesService extends APIService {
-  async getTxtFiles() {
+  async getTxtFiles(searchBy: TxtFileSearchBy | undefined, query: string) {
     try {
-      const response = await this.axiosInstance.get<TxtFile[]>(API_ROUTES.FILES);
+      const response = await this.axiosInstance.get<TxtFile[]>(
+        API_ROUTES.FILES,
+        {
+          params: { search_by: !!query ? searchBy : undefined, q: query ?? "" },
+        });
       return { data: response.data, error: null };
-      // return { data: { data: DUMMY_DATA }, error: null };
     } catch (error) {
       return { data: null, error };
     }
@@ -36,7 +41,6 @@ class TxtFilesService extends APIService {
         },
       });
       return { data: response.data, error: null };
-      // return { data: { data: DUMMY_DATA[0] }, error: null };
     } catch (error) {
       return { data: null, error };
     }

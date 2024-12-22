@@ -1,20 +1,47 @@
 import { useEffect, useState } from "react";
-import { Card, Input, Typography } from "../../components/material-tailwind";
-import { TxtFile } from "../../services/txt-files.service";
+import { Card, Chip, Input, Tabs, Typography } from "../../components/material-tailwind";
+import { TxtFile, TxtFileSearchBy } from "../../services/txt-files.service";
 import { TxtFileImportDialog } from "./TxtFileImportDialog";
 import { formatDate } from "../../services/lib/utils";
 import { PageSearch } from "iconoir-react";
 import { useTxtFiles } from "../../hooks/useTxtFiles";
 
-const TABLE_HEAD = ["Name", "Created", "Size", "Tags", "URI", "Actions"];
+const TABLE_HEAD = ["Name", "Created", "Size", "Tags"]; //, "URI", "Actions"];
+
+function SearchBy({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange: (e: any) => void;
+}) {
+  return (
+    <Tabs value={value} onValueChange={(e) => onChange(e)} className="bg-white rounded-md h-9">
+      <Tabs.List className="w-full bg-transparent p-1">
+        <Tabs.Trigger className="w-full rounded-md" value="tags">
+          Tags
+        </Tabs.Trigger>
+        <Tabs.Trigger className="w-full rounded-md" value="contents">
+          Contents
+        </Tabs.Trigger>
+        <Tabs.Trigger className="w-full rounded-md" value="name">
+          Filename
+        </Tabs.Trigger>
+        <Tabs.TriggerIndicator className="rounded-lg bg-secondary opacity-50" />
+      </Tabs.List>
+    </Tabs>
+  );
+}
 
 export default function TxtFilesTable() {
   const [tableRows, setTableRows] = useState<TxtFile[]>([]);
+  const [searchBy, setSearchBy] = useState<TxtFileSearchBy | undefined>();
+  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(true);
 
-
-  const { data, error, isPending, refetch: refetchRows } = useTxtFiles();
-
+  const { data, error, refetch: refetchRows } = useTxtFiles({
+    searchBy, query: searchValue,
+  });
 
   useEffect(() => {
     if (!data) return;
@@ -27,36 +54,45 @@ export default function TxtFilesTable() {
     }
   }, [data, error]);
 
+  useEffect(() => {
+    setLoading(true);
+    refetchRows();
+  }, [searchBy, searchValue]);
 
   return (
-    <Card className="max-h-[90vh] w-full flex flex-col border-green-200 border-2 border-dashed">
+    <Card className="max-h-[90vh] w-full flex flex-col">
       <Card.Header
-        className="rounded-md shrink-0 bg-zinc-400 px-3">
-        <div className="mb-4 flex flex-col md:flex-row md:items-center">
-          <div className="p-2 grow self-start">
+        className="rounded-md shrink-0 bg-gray-100 px-3">
+        <div className="flex flex-col md:flex-row md:items-center">
+          <div className="p-2 grow text-left">
             <div className="self-start">
               <Typography type="h5" color="primary">
                 Recent Uploads
               </Typography>
               <Typography color="info" className="mt-1 font-normal">
-                These are details about the last imports
+                These are details about the latest files uploaded
               </Typography>
             </div>
           </div>
-          <div className="flex w-full gap-2 md:w-max">
-            {false && <div className="w-full md:w-72">
-              <Input
-                title="Search by tags" >
-                <Input.Icon slot="icon" className="text-gray-300" >
-                  <PageSearch className="h-5 w-5" />
+          <div className="flex items-center gap-2">
+            <div className="w-[300px] space-y-4">
+              <Input placeholder="Search" className="pl-2" value={searchValue} onChange={(e) => setSearchValue(e.target.value)}>
+                <Input.Icon className="text-gray-500 items-center">
+                  <PageSearch className="w-full h-full -ml-7 mt-2" />
                 </Input.Icon>
               </Input>
-            </div>}
-            <TxtFileImportDialog closeDialog={refetchRows} />
+            </div>
+            <div className="w-72 flex items-center justify-stretch justify-items-stretch gap-1">
+              by
+              <SearchBy onChange={setSearchBy} value={searchBy} />
+            </div>
+            <div className="">
+              <TxtFileImportDialog closeDialog={refetchRows} />
+            </div>
           </div>
         </div>
       </Card.Header>
-      <Card.Body className="p-0 mt-2 shrink overflow-y-auto overflow-x-hidden">
+      <Card.Body className="p-0 shrink overflow-y-auto overflow-x-hidden">
         <table className="w-full min-w-max table-auto text-left relative">
           <thead className="sticky top-0 bg-gray-200">
             <tr>
@@ -124,16 +160,15 @@ export default function TxtFilesTable() {
                         {(size / 1024).toFixed(2)} KB
                       </Typography>
                     </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="primary"
-                        className="font-normal"
-                      >
-                        {tags}
-                      </Typography>
+                    <td className={`${classes} flex flex-wrap`}>
+                      {tags && tags.split(",").map((tag, i) => (
+                        <Chip key={i} className={`mr-1 px-1 bg-gray-${i % 2 === 0 ? "2" : "4"
+                          }00`} size="sm" variant="outline">
+                          <Chip.Label>{tag}</Chip.Label>
+                        </Chip>
+                      ))}
                     </td>
-                    <td className={classes}>
+                    {/* <td className={classes}>
                       <div className="w-max">
                         <Typography
                           variant="small"
@@ -143,7 +178,7 @@ export default function TxtFilesTable() {
                           {uri.slice(0, 5)} ... {uri.slice(-2)}
                         </Typography>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 );
               },
@@ -163,15 +198,6 @@ export default function TxtFilesTable() {
           </tbody>
         </table>
       </Card.Body>
-      {/* <Card.Footer className="border-black border-2 border-dashed">
-        <Typography
-          variant="h6"
-          color="primary"
-          className="leading-none font-bold"
-        >
-          Here is the footer
-        </Typography>
-      </Card.Footer> */}
     </Card>
   );
 }
