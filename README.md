@@ -35,7 +35,7 @@ VITE_TXT_API_URL=http://localhost:8000
 4. **Run the development server**
 
 ```sh
-npm start
+npm run dev
 ```
 
 5. **Access the application**  
