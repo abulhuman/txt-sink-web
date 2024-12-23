@@ -37,7 +37,7 @@ export default function TxtFilesTable() {
   const [tableRows, setTableRows] = useState<TxtFile[]>([]);
   const [searchBy, setSearchBy] = useState<TxtFileSearchBy | undefined>();
   const [searchValue, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   const { data, error, refetch: refetchRows } = useTxtFiles({
     searchBy, query: searchValue,
@@ -50,12 +50,12 @@ export default function TxtFilesTable() {
       return;
     } else if (data) {
       setTableRows(data);
-      setLoading(false);
+      // setLoading(false);
     }
   }, [data, error]);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     refetchRows();
   }, [searchBy, searchValue]);
 
@@ -76,7 +76,7 @@ export default function TxtFilesTable() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-[300px] space-y-4">
-              <Input placeholder="Search" className="pl-2" value={searchValue} onChange={(e) => setSearchValue(e.target.value)}>
+              <Input placeholder="Search" className="pl-2" value={searchValue} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}>
                 <Input.Icon className="text-gray-500 items-center">
                   <PageSearch className="w-full h-full -ml-7 mt-2" />
                 </Input.Icon>
@@ -120,7 +120,7 @@ export default function TxtFilesTable() {
                   name,
                   size,
                   tags,
-                  uri,
+                  // uri,
                   created_date,
                 },
                 index,
@@ -198,6 +198,6 @@ export default function TxtFilesTable() {
           </tbody>
         </table>
       </Card.Body>
-    </Card>
+    </Card >
   );
 }
