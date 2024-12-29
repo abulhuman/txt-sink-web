@@ -21,7 +21,7 @@ class TxtFilesService extends APIService {
       const response = await this.axiosInstance.get<TxtFile[]>(
         API_ROUTES.FILES,
         {
-          params: { search_by: !!query ? searchBy : undefined, q: query ?? "" },
+          params: { search_by: query ? searchBy : undefined, q: query ?? "" },
         });
       return { data: response.data, error: null };
     } catch (error) {

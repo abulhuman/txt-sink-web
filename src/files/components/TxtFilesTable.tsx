@@ -13,10 +13,10 @@ function SearchBy({
   onChange,
 }: {
   value?: string;
-  onChange: (e: any) => void;
+  onChange: React.Dispatch<React.SetStateAction<TxtFileSearchBy | undefined>>;
 }) {
   return (
-    <Tabs value={value} onValueChange={(e) => onChange(e)} className="bg-white rounded-md h-9">
+    <Tabs value={value} onValueChange={(e) => onChange(e as TxtFileSearchBy)} className="bg-white rounded-md h-9">
       <Tabs.List className="w-full bg-transparent p-1">
         <Tabs.Trigger className="w-full rounded-md" value="tags">
           Tags
@@ -57,7 +57,7 @@ export default function TxtFilesTable() {
   useEffect(() => {
     // setLoading(true);
     refetchRows();
-  }, [searchBy, searchValue]);
+  }, [searchBy, searchValue, refetchRows]);
 
   return (
     <Card className="max-h-[90vh] w-full flex flex-col">
