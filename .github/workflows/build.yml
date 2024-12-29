@@ -37,10 +37,10 @@ jobs:
     
       - name: Build the project
         env:
-          VITE_TXT_SINK_API_URL: ${{ secrets.BASE_URL }}
+          VITE_TXT_SINK_API_URL: ${{ secrets.VITE_TXT_SINK_API_URL }}
         run: |
-          echo "VITE_TXT_SINK_API_URL=${{ secrets.BASE_URL }}" > .env.production
-          npm run build
+          echo "VITE_TXT_SINK_API_URL=${{ secrets.VITE_TXT_SINK_API_URL }}" > .env.production
+          npm run build -- --mode production
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
