@@ -5,6 +5,8 @@ import App from './App.tsx';
 import { ThemeProvider } from './components/material-tailwind.tsx';
 import { Toaster } from 'react-hot-toast';
 
+console.log(`VITE_APP_TXT_SINK_API_URL: ${import.meta.env.VITE_APP_TXT_SINK_API_URL}`)
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider value={undefined}>
