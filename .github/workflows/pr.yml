@@ -1,0 +1,29 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_call:
+
+jobs:
+  quality-assurance:
+    name: Quality Assurance
+    runs-on: ubuntu-24.04
+    strategy:
+      max-parallel: 4
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Lint code
+      run: npm run lint
+    
+    - name: Build
+      run: npm run build
