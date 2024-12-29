@@ -93,8 +93,8 @@ export function TxtFileImportDialog({
         closeDialog();
         setIsOpen(false);
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
