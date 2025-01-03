@@ -2,7 +2,7 @@
 import {
   Tabs,
 } from '../../components/material-tailwind';
-import { TxtFileSearchBy } from "../../repositories/txt-files.repository";
+import { TxtFileSearchBy } from '../../types/txt-files';
 
 export function SearchByTabs({
   value,

@@ -6,15 +6,12 @@ import {
   Typography,
   Spinner
 } from "../../components/material-tailwind";
-import {
-  TxtFileListResponse,
-  TxtFileSearchBy
-} from "../../repositories/txt-files.repository";
 import { TxtFileImportDialog } from "./TxtFileImportDialog";
 import { SearchByTabs } from "./SearchByTabs";
 import { formatDate } from "../../services/lib/utils";
 import { PageSearch } from "iconoir-react";
 import { useTxtFiles } from "../../hooks/useTxtFiles";
+import { TxtFileListResponse, TxtFileSearchBy } from "../../types/txt-files";
 
 const TABLE_HEAD = ["Name", "Modified", "Size", "Tags"]; //, "URI", "Actions"];
 
@@ -162,7 +159,7 @@ export default function TxtFilesTable() {
                         className={`${classes} flex flex-wrap`}
                       >
                         {tags &&
-                          tags.split(",").map((tag, i) => (
+                          tags.split(",").map((tag: string, i) => (
                             <Chip
                               key={i}
                               className={`mr-1 px-1 bg-gray-${i % 2 === 0 ? "2" : "4"
