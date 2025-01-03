@@ -1,24 +1,11 @@
+import { TxtFileListResponse, TxtFileSearchBy } from "../types/txt-files";
 import { APIService } from "./api.service";
 import { API_ROUTES } from "./lib/constants";
-
-
-export type TxtFile = {
-  id: number;
-  created_date: string;
-  modified_date: string;
-  name: string;
-  uri: string;
-  size: number;
-  contents: string;
-  tags: string;
-};
-
-export type TxtFileSearchBy = "tags" | "name" | "contents";
 
 class TxtFilesService extends APIService {
   async getTxtFiles(searchBy: TxtFileSearchBy | undefined, query: string) {
     try {
-      const response = await this.axiosInstance.get<TxtFile[]>(
+      const response = await this.axiosInstance.get<TxtFileListResponse[]>(
         API_ROUTES.FILES,
         {
           params: { search_by: query ? searchBy : undefined, q: query ?? "" },
