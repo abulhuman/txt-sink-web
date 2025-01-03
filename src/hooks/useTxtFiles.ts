@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { TxtFileSearchBy, txtFilesService } from "../services/txt-files.service";
+import { txtFilesService } from "../services/txt-files.service";
+import { TxtFileSearchBy } from "../types/txt-files";
 
 export function useTxtFiles({
   searchBy,
   query,
-}: { searchBy: TxtFileSearchBy|undefined, query: string; }) {
-  const { isPending, data, error, refetch } = useQuery({
+}: { searchBy: TxtFileSearchBy | undefined, query: string; }) {
+  const { isFetching, isSuccess, data, error, refetch } = useQuery({
     queryKey: ["txtFiles"],
     queryFn: async () => await txtFilesService.getTxtFiles(searchBy, query),
     select: (data) => data?.data,
@@ -14,5 +15,5 @@ export function useTxtFiles({
     retryDelay: 1000,
     throwOnError: true,
   });
-  return { isPending, data, error, refetch };
+  return { isFetching, isSuccess, data, error, refetch };
 };

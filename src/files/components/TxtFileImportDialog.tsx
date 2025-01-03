@@ -99,7 +99,9 @@ export function TxtFileImportDialog({
   };
 
   return (
-    <div className='grid place-items-center w-full'>
+    <div
+      data-testid='txt-file-import-dialog'
+      className='grid place-items-center w-full'>
       <Dialog open={isOpen} onOpenChange={(isOpen) => {
         setIsOpen(isOpen);
         if (!isOpen) {
